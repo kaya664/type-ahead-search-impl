@@ -9,23 +9,24 @@ import org.springframework.util.StringUtils;
 @Component
 public class Tree {
 	
-	Node baseNode = new Node(null);
+	Node root = new Node(null);
 	
 	public Tree() {
 		buildTree();
-		getAutoCompleteTextListForEnteredText(baseNode, "Alf");
-		getAutoCompleteTextListForEnteredText(baseNode, "Charcoa");
+		getAutoCompleteTextListForEnteredText(root, "Alf");
+		getAutoCompleteTextListForEnteredText(root, "Charcoa");
 	}
 	
 	public void buildTree() {
-		addText(baseNode, "Alfa");
-		addText(baseNode, "Bravo");
-		addText(baseNode, "Charlie");
-		addText(baseNode, "Delta");
-		addText(baseNode, "Alfred");
-		addText(baseNode, "Brain");
-		addText(baseNode, "Charcoal");
-		addText(baseNode, "Delivery");
+		addText(root, "Alfa");
+		addText(root, "Bravo");
+		addText(root, "Charlie");
+		addText(root, "Delta");
+		addText(root, "Alfred");
+		addText(root, "Brain");
+		addText(root, "Charcoal");
+		addText(root, "Delivery");
+		addText(root, "Clement");
 	}
 	
 	public void addText(Node root, String text) {
