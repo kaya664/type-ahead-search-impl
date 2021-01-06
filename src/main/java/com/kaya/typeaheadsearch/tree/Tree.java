@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 @Component
 public class Tree {
@@ -12,37 +13,72 @@ public class Tree {
 	
 	public Tree() {
 		buildTree();
-		traverseTree(baseNode);
+		getAutoCompleteTextListForEnteredText(baseNode, "Alf");
+		getAutoCompleteTextListForEnteredText(baseNode, "Charcoa");
 	}
 	
 	public void buildTree() {
-		Node tempNode = baseNode;
-		String searchText = "SearchText";
-		if(searchText != null && searchText.trim().length() > 0) {
-			for(char c: searchText.toCharArray()) {
-				tempNode = tempNode.getChildNode(c + "");
-			}
-			tempNode.setMeaningfulText(true);
-		}
-		searchText = "Searchhie";
-		if(searchText != null && searchText.trim().length() > 0) {
-			for(char c: searchText.toCharArray()) {
-				tempNode = tempNode.getChildNode(c + "");
-			}
-		}
-		System.out.println("Tree builded");
+		addText(baseNode, "Alfa");
+		addText(baseNode, "Bravo");
+		addText(baseNode, "Charlie");
+		addText(baseNode, "Delta");
+		addText(baseNode, "Alfred");
+		addText(baseNode, "Brain");
+		addText(baseNode, "Charcoal");
+		addText(baseNode, "Delivery");
 	}
 	
-	public void traverseTree(Node node) {
+	public void addText(Node root, String text) {
+		Node temp = root;
+		if(StringUtils.hasText(text)) {
+			for(Character c: text.toCharArray()) {
+				temp = temp.addChildNode(c);
+			}
+			temp.setMeaningfulText(true);
+			temp.setText(text);
+		}
+	}
+	
+	public void traverseTree(Node node, List<String> textList) {
 		if(node != null) {
-			System.out.println(node.getCharacter());
-			if(node.getNodeMap().size() > 0) {
-				List<Node> nodeList = new ArrayList<Node>(node.getNodeMap().values());
+			if(node.isMeaningfulText()) {
+				textList.add(node.getText());
+			}
+			if(node.getChildNodeMap() != null && node.getChildNodeMap().size() > 0) {
+				List<Node> nodeList = new ArrayList<Node>(node.getChildNodeMap().values());
 				for(Node tempNode: nodeList) {
-					traverseTree(tempNode);
+					traverseTree(tempNode, textList);
 				}
 			}
 		}
+	}
+	
+	public List<String> getAutoCompleteTextListForEnteredText(Node root, String enteredText) {
+		if(!StringUtils.hasText(enteredText)) {
+			return null;
+		}
+		
+		Node respectiveRoot = findRootNodeForAutoCompleteSearch(root, enteredText);
+		if(respectiveRoot == null) {
+			return null;
+		}
+		
+		List<String> autoCompleteTextList = new ArrayList<>();
+		traverseTree(respectiveRoot, autoCompleteTextList);
+		for(String text: autoCompleteTextList) {
+			System.out.println(text);
+		}
+		
+		return autoCompleteTextList;
+	}
+	
+	private Node findRootNodeForAutoCompleteSearch(Node root, String enteredText) {
+		Node respectiveRoot = root;
+		for(Character c: enteredText.toCharArray()) {
+			if(respectiveRoot != null) 
+				respectiveRoot = respectiveRoot.getChildNode(c);
+		}
+		return respectiveRoot;
 	}
 	
 }
