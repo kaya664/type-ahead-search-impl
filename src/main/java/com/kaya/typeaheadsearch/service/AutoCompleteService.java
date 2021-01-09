@@ -6,17 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kaya.typeaheadsearch.intf.IAutoCompleteService;
-import com.kaya.typeaheadsearch.tree.Tree;
+import com.kaya.typeaheadsearch.intf.IAutoCompleteTextStore;
 
 @Service
 public class AutoCompleteService implements IAutoCompleteService {
 	
 	@Autowired
-	Tree tree;
+	IAutoCompleteTextStore textStore;
 	
 	@Override
 	public List<String> getAutoCompleteTextForEnteredText(String text) {
-		return tree.getAutoCompleteTextList(text);
+		return textStore.getAutoCompleteTextList(text);
 	}
 	
 }
