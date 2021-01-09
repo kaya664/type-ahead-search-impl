@@ -11,13 +11,11 @@ public class Tree {
 	
 	Node root = new Node(null);
 	
-	public Tree() {
+	private Tree() {
 		buildTree();
-		getAutoCompleteTextListForEnteredText(root, "Alf");
-		getAutoCompleteTextListForEnteredText(root, "Charcoa");
 	}
 	
-	public void buildTree() {
+	private void buildTree() {
 		addText(root, "Alfa");
 		addText(root, "Bravo");
 		addText(root, "Charlie");
@@ -29,7 +27,11 @@ public class Tree {
 		addText(root, "Clement");
 	}
 	
-	public void addText(Node root, String text) {
+	public List<String> getAutoCompleteTextList(String text) {
+		return getAutoCompleteTextListForEnteredText(root, text);
+	}
+	
+	private void addText(Node root, String text) {
 		Node temp = root;
 		if(StringUtils.hasText(text)) {
 			for(Character c: text.toCharArray()) {
@@ -40,7 +42,7 @@ public class Tree {
 		}
 	}
 	
-	public void traverseTree(Node node, List<String> textList) {
+	private void traverseTree(Node node, List<String> textList) {
 		if(node != null) {
 			if(node.isMeaningfulText()) {
 				textList.add(node.getText());
@@ -54,7 +56,7 @@ public class Tree {
 		}
 	}
 	
-	public List<String> getAutoCompleteTextListForEnteredText(Node root, String enteredText) {
+	private List<String> getAutoCompleteTextListForEnteredText(Node root, String enteredText) {
 		if(!StringUtils.hasText(enteredText)) {
 			return null;
 		}
