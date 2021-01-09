@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kaya.typeaheadsearch.service.AutoCompleteService;
+import com.kaya.typeaheadsearch.intf.IAutoCompleteService;
 
 @RestController()
 @RequestMapping("/autocomplete")
 public class AutoCompleteController {
 	
 	@Autowired
-	AutoCompleteService autoCompleteService;
+	IAutoCompleteService autoCompleteService;
 	
 	@GetMapping("/texts")
 	public List<String> getAutoCompleteTexts(@RequestParam("text") String text) {

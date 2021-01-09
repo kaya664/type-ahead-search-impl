@@ -6,8 +6,10 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import com.kaya.typeaheadsearch.intf.IAutoCompleteTextStore;
+
 @Component
-public class Tree {
+public class Tree implements IAutoCompleteTextStore{
 	
 	Node root = new Node(null);
 	
