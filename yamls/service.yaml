@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: type-ahead-search-be
+spec:
+  selector:
+    app: type-ahead-search-be
+  ports:
+  - protocol: TCP
+    port: 8080
+  type: LoadBalancer

@@ -1,34 +1,55 @@
 package com.kaya.typeaheadsearch.tree;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
+import org.springframework.util.StopWatch;
 import org.springframework.util.StringUtils;
 
+import com.kaya.typeaheadsearch.intf.IAutoCompleteTextStore;
+
 @Component
-public class Tree {
+public class Tree implements IAutoCompleteTextStore{
 	
-	Node baseNode = new Node(null);
+	Node root = new Node(null);
 	
-	public Tree() {
+	private Tree() {
 		buildTree();
-		getAutoCompleteTextListForEnteredText(baseNode, "Alf");
-		getAutoCompleteTextListForEnteredText(baseNode, "Charcoa");
 	}
 	
-	public void buildTree() {
-		addText(baseNode, "Alfa");
-		addText(baseNode, "Bravo");
-		addText(baseNode, "Charlie");
-		addText(baseNode, "Delta");
-		addText(baseNode, "Alfred");
-		addText(baseNode, "Brain");
-		addText(baseNode, "Charcoal");
-		addText(baseNode, "Delivery");
+	private void buildTree() {
+		StopWatch stopWatch = new StopWatch();
+		stopWatch.start();
+		File[] fileArray = getFileNames();
+		if(fileArray != null ) {
+			int index = 0;
+			while(index < fileArray.length) {
+				addText(root, fileArray[index].getName().substring(0, fileArray[index].getName().indexOf(".txt")));
+				index++;
+			}
+		}
+		stopWatch.stop();
+		System.out.println(stopWatch.getTotalTimeMillis());
+		addText(root, "Alfa");
+		addText(root, "Bravo");
+		addText(root, "Charlie");
 	}
 	
-	public void addText(Node root, String text) {
+	private File[] getFileNames() {
+		File folder = new File("./words/");
+		if(!folder.exists())
+			return null;
+		return folder.listFiles();
+	}
+	
+	@Override
+	public List<String> getAutoCompleteTextList(String text) {
+		return getAutoCompleteTextListForEnteredText(root, text);
+	}
+	
+	private void addText(Node root, String text) {
 		Node temp = root;
 		if(StringUtils.hasText(text)) {
 			for(Character c: text.toCharArray()) {
@@ -39,7 +60,7 @@ public class Tree {
 		}
 	}
 	
-	public void traverseTree(Node node, List<String> textList) {
+	private void traverseTree(Node node, List<String> textList) {
 		if(node != null) {
 			if(node.isMeaningfulText()) {
 				textList.add(node.getText());
@@ -53,7 +74,7 @@ public class Tree {
 		}
 	}
 	
-	public List<String> getAutoCompleteTextListForEnteredText(Node root, String enteredText) {
+	private List<String> getAutoCompleteTextListForEnteredText(Node root, String enteredText) {
 		if(!StringUtils.hasText(enteredText)) {
 			return null;
 		}
@@ -79,6 +100,13 @@ public class Tree {
 				respectiveRoot = respectiveRoot.getChildNode(c);
 		}
 		return respectiveRoot;
+	}
+
+	@Override
+	public void addTextToStore(String text) {
+		if(StringUtils.hasText(text)) {
+			addText(root, text);
+		}
 	}
 	
 }
