@@ -1,9 +1,11 @@
 package com.kaya.typeaheadsearch.tree;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
+import org.springframework.util.StopWatch;
 import org.springframework.util.StringUtils;
 
 import com.kaya.typeaheadsearch.intf.IAutoCompleteTextStore;
@@ -18,15 +20,21 @@ public class Tree implements IAutoCompleteTextStore{
 	}
 	
 	private void buildTree() {
-		addText(root, "Alfa");
-		addText(root, "Bravo");
-		addText(root, "Charlie");
-		addText(root, "Delta");
-		addText(root, "Alfred");
-		addText(root, "Brain");
-		addText(root, "Charcoal");
-		addText(root, "Delivery");
-		addText(root, "Clement");
+		StopWatch stopWatch = new StopWatch();
+		stopWatch.start();
+		File[] fileArray = getFileNames();
+		int index = 0;
+		while(index < fileArray.length) {
+			addText(root, fileArray[index].getName().substring(0, fileArray[index].getName().indexOf(".txt")));
+			index++;
+		}
+		stopWatch.stop();
+		System.out.println(stopWatch.getTotalTimeMillis());
+	}
+	
+	private File[] getFileNames() {
+		File folder = new File("./words/");
+		return folder.listFiles();
 	}
 	
 	@Override
