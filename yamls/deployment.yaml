@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: type-ahead-search-be
+spec:
+  selector:
+      matchLabels:
+        app: type-ahead-search-be
+  replicas: 15
+  template:
+    metadata:
+      labels:
+        app: type-ahead-search-be
+    spec:
+      containers:
+        - name: type-ahead-search-be
+          image: type-ahead-search-be:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080

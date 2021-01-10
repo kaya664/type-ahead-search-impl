@@ -6,4 +6,5 @@ public interface IAutoCompleteTextStore {
 
 	List<String> getAutoCompleteTextList(String text);
 
+	void addTextToStore(String text);
 }

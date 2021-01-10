@@ -23,17 +23,24 @@ public class Tree implements IAutoCompleteTextStore{
 		StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
 		File[] fileArray = getFileNames();
-		int index = 0;
-		while(index < fileArray.length) {
-			addText(root, fileArray[index].getName().substring(0, fileArray[index].getName().indexOf(".txt")));
-			index++;
+		if(fileArray != null ) {
+			int index = 0;
+			while(index < fileArray.length) {
+				addText(root, fileArray[index].getName().substring(0, fileArray[index].getName().indexOf(".txt")));
+				index++;
+			}
 		}
 		stopWatch.stop();
 		System.out.println(stopWatch.getTotalTimeMillis());
+		addText(root, "Alfa");
+		addText(root, "Bravo");
+		addText(root, "Charlie");
 	}
 	
 	private File[] getFileNames() {
 		File folder = new File("./words/");
+		if(!folder.exists())
+			return null;
 		return folder.listFiles();
 	}
 	
@@ -93,6 +100,13 @@ public class Tree implements IAutoCompleteTextStore{
 				respectiveRoot = respectiveRoot.getChildNode(c);
 		}
 		return respectiveRoot;
+	}
+
+	@Override
+	public void addTextToStore(String text) {
+		if(StringUtils.hasText(text)) {
+			addText(root, text);
+		}
 	}
 	
 }

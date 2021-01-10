@@ -19,4 +19,9 @@ public class AutoCompleteService implements IAutoCompleteService {
 		return textStore.getAutoCompleteTextList(text);
 	}
 	
+	@Override
+	public void addTextToStore(String text) {
+		textStore.addTextToStore(text);
+	}
+	
 }
